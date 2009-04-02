@@ -1,0 +1,120 @@
+NAME
+
+  Badge::GoogleTalk - To get your status message/online status/chat link from google talk badge for website live chat.
+
+VERSION
+
+  version 0.0.1
+
+
+SYNOPSIS
+
+    use Badge::GoogleTalk;
+	my $my_object = Badge::GoogleTalk->new(
+			key => "your identification key",
+	);
+
+	# get you google talk status message	
+	my $status = $my_object->get_status();
+
+	# get your online status
+	my $online_status = $my_object->is_online();
+	my $ol_status = $online_status == 0 ? "Offline" : "Online";
+	
+	# check your away status
+	my $away_status = $my_object->is_away();
+	my $aw_status = $away_status == 1 ? "Away" : "Online";
+	
+	# get you badge for you website
+	my $badge = $my_object->get_badge();
+
+	# get you chat link for you website
+	my $chat_link = $my_object->get_chat_box_link();
+
+
+	To create a simple Badge::GoogleTalk you must pass the key;
+	key is your identification from the google authentication.
+	
+	To create your chatback badge, visit http://www.google.com/talk/service/badge/New.
+	If you're using a Google Apps account,
+	you can create a chatback badge by visiting http://www.google.com/talk/service/a/DOMAIN/badge/New where DOMAIN is the name of your domain.
+ 
+	Use the alphanumeric account hash to pass as key in constructor
+  
+DESCRIPTION
+
+	A simple perl module for retrieving a user's Google Talk status
+	Google does provide a badge, to post your status/images/links to your
+	website to start a chat. Using this code, we can extract the status messages, online status,
+	chat box link and return that information to our perl application to keep up the live chat.
+
+METHODS
+
+  is_online
+
+	Title   : is_online
+					      
+    Function: this will return your online status
+	
+	return : 1 if online, 0 if offline
+
+  is_away
+
+	Title   : is_away
+					      
+    Function: this will return your away status
+	
+	return : 1 if away
+
+  get_status
+
+	Title   : get_status
+					      
+    Function: this will return your status message
+	
+	return : 1 if away
+
+  get_chat_box_link
+
+	Title   : get_chat_box_link
+					      
+    Function: this will return you the link of you chat box
+
+
+  get_badge
+
+	Title   : get_badge
+					      
+    Function: this will return you the badge iframe to use for your website
+
+
+DIAGNOSTICS
+
+	This module depends on the output from a hosted web page by Google. If Google
+	decides at any time to change this output, the module will likely fail.
+	Please e-mail me if this is the case, so we can get it working again.
+
+
+INSTALLATION
+
+To install this module, run the following commands:
+
+	perl Makefile.PL
+	make
+	make test
+	make install
+
+Alternatively, to install with Module::Build, you can use the following commands:
+
+	perl Build.PL
+	./Build
+	./Build test
+	./Build install
+
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2009, Rakesh Kumar Shardiwal
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
