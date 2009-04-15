@@ -2,26 +2,11 @@ package Badge::GoogleTalk;
 
 use warnings;
 use strict;
-use Carp;
 
 use version;
-my $VERSION = qv('0.0.1');
+my $VERSION = qv('0.0.2');
 
-use Data::Dumper;
 use WWW::Mechanize;
-use HTTP::Request;
-use LWP::UserAgent;
-use Exporter();
-
-our @EXPORT_OK = (
-	qw/
-		is_online
-		is_away
-		get_status
-		get_badge
-		get_chat_box_link
-	  /
-);
 
 sub new
 {
@@ -31,12 +16,9 @@ sub new
 	
 	my $self = { %args };
 	
-	if(!defined $self->{'key'})
-	{
-		_warn_user("User key is must to use this module :".
-				   "For more info please see the module pod");
-		exit;
-	}
+	_warn_user('Error',"User key is must to use this module :".
+				   "For more info please see the module pod") if(!defined $self->{'key'});
+	
 	$self->{'talk_url'} = $query_link.$self->{'key'};
 	
 	bless $self, $class or die "Can't bless $class: $!";
@@ -50,22 +32,18 @@ sub _get_contents
 	my $mech       = WWW::Mechanize->new();
 	$mech->get($self->{'talk_url'});
 
-	my $page_contents = $mech->content();
+	my $page_contents 	= $mech->content();
+	my $content_type 	= $mech->ct();
+	my $response 		= $mech->status();
 
-	if ($page_contents =~ /Bad Request/ig)
-	{
-		_warn_user('Provided user key is in-valid !');
-		return 0;
-	}
-
+	_warn_user('Error','Provided user key is in-valid !') if($response == '400');
+		
+	$self->{'is_badge_html'} = $mech->is_html() ? 1 : 0 ;
+	
+	_warn_user('Warning',"Your Badge's is Hyperlink and status icon style".
+				   "sorry can't process for this style") if(!$self->{'is_badge_html'});
+	
 	return $page_contents;
-}
-
-sub get_status {
-	my $self = shift;
-	my $contents = $self->_get_contents();
-	$contents =~ /<div class=\"r\".*? src="\/talk\/service\/resources\/.*?">\s*(.*?)\s*<\/div><\/div>/;
-	return $1;
 }
 
 sub is_online{
@@ -76,6 +54,15 @@ sub is_online{
 		return 0;
 	}
 	return 1;
+}
+
+sub get_status {
+	my $self = shift;
+	my $contents = $self->_get_contents();
+	$contents =~ /<div class=\"r\".*? src="\/talk\/service\/resources\/.*?">\s*(.*?)\s*<\/div><\/div>/;
+	$contents =~ /<a name=\"s\".*? onclick="_click.*?">\s*(.*?)\s*<\/a><\/div><\/body>/;
+	$contents =~ /<div class=\"r\".*? style=".*?<\/span>\s*(.*?)\s*<\/div><\/div><\/body>/;
+	return $1;
 }
 
 sub get_chat_box_link{
@@ -103,11 +90,16 @@ sub get_badge{
 	return $badge;
 }
 
-sub _warn_user {
-    my($msg) = @_;
-    print "Error\t: $msg \n";
+sub is_classic_style {
+	my $self	= shift;
+	return $self->{'is_badge_html'};
 }
 
+sub _warn_user {
+    my($type,$msg) = @_;
+    print "[ $type ] $msg \n";
+	exit;
+}
 
 
 1; # Magic true value required at end of module
@@ -129,23 +121,26 @@ version 0.0.1
 			key => "your identification key",
 	);
 
-	# get you google talk status message	
-	my $status = $my_object->get_status();
-
-	# get your online status
+	# Get Your Badge's online status
 	my $online_status = $my_object->is_online();
 	my $ol_status = $online_status == 0 ? "Offline" : "Online";
 	
-	# check your away status
+	# Get Your Badge's status message	
+	my $status = $my_object->get_status();
+
+	# Check Your Badge's away status
 	my $away_status = $my_object->is_away();
 	my $aw_status = $away_status == 1 ? "Away" : "Online";
 	
-	# get you badge for you website
+	# Check Your Badge's Style
+	my $style = $my_object->is_classic_style();
+	my $style_status = $style == 1 ? "Classic badge or one/two line style" : "Hyperlink and status icon style";
+	
+	# Your Badge's in HTML format
 	my $badge = $my_object->get_badge();
 
-	# get you chat link for you website
+	# Your chat link for your website
 	my $chat_link = $my_object->get_chat_box_link();
-
 
 	To create a simple Badge::GoogleTalk you must pass the key;
 	key is your identification from the google authentication.
@@ -189,6 +184,14 @@ version 0.0.1
 	
 	return : 1 if away
 
+=head2 is_classic_style
+
+	Title   : is_classic_style
+					      
+    Function: this will return your badge style
+	
+	return : 1 if Classic badge or one/two line style, 0 if Hyperlink and status icon style
+
 =head2 get_chat_box_link
 
 	Title   : get_chat_box_link
@@ -211,16 +214,6 @@ version 0.0.1
 
 =over
 
-=item C<< Error message here, perhaps with %s placeholders >>
-
-[Description of error here]
-
-=item C<< Another error message here >>
-
-[Description of error here]
-
-[Et cetera, et cetera]
-
 =back
 
 
@@ -232,12 +225,7 @@ Badge::GoogleTalk requires no configuration files or environment variables.
 =head1 DEPENDENCIES
 
 	This module have the dependencies with the following modules
-	Data::Dumper
 	WWW::Mechanize
-	HTTP::Request
-	LWP::UserAgent
-	Exporter
-
 
 =head1 BUGS AND LIMITATIONS
 

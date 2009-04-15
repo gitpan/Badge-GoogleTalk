@@ -12,23 +12,28 @@ SYNOPSIS
     use Badge::GoogleTalk;
 	my $my_object = Badge::GoogleTalk->new(
 			key => "your identification key",
+		      # key => "z01q6amlq5ij9dvg7gbgb2oj5jph3fohsojef08g3l0aevm02th1k13phg2bi535f9rphmm6t6bukdt93khaacb5f5qilvcqrph6gfankdkkc2vjbs2rgrjki1s35bk1910vc91qr70in1aa6hm67gbijos4q4tlc4no7jq0a",
 	);
 
-	# get you google talk status message	
-	my $status = $my_object->get_status();
-
-	# get your online status
+        # Get Your Badge's online status
 	my $online_status = $my_object->is_online();
 	my $ol_status = $online_status == 0 ? "Offline" : "Online";
 	
-	# check your away status
+	# Get Your Badge's status message	
+	my $status = $my_object->get_status();
+
+	# Check Your Badge's away status
 	my $away_status = $my_object->is_away();
 	my $aw_status = $away_status == 1 ? "Away" : "Online";
 	
-	# get you badge for you website
+	# Check Your Badge's Style
+	my $style = $my_object->is_classic_style();
+	my $style_status = $style == 1 ? "Classic badge or one/two line style" : "Hyperlink and status icon style";
+	
+	# Your Badge's in HTML format
 	my $badge = $my_object->get_badge();
 
-	# get you chat link for you website
+	# Your chat link for your website
 	my $chat_link = $my_object->get_chat_box_link();
 
 
@@ -58,7 +63,7 @@ METHODS
 	
 	return : 1 if online, 0 if offline
 
-  is_away
+ is_away
 
 	Title   : is_away
 					      
@@ -66,7 +71,7 @@ METHODS
 	
 	return : 1 if away
 
-  get_status
+ get_status
 
 	Title   : get_status
 					      
@@ -74,14 +79,22 @@ METHODS
 	
 	return : 1 if away
 
-  get_chat_box_link
+ is_classic_style
+
+	Title   : is_classic_style
+					      
+    Function: this will return your badge style
+	
+	return : 1 if Classic badge or one/two line style, 0 if Hyperlink and status icon style
+
+ get_chat_box_link
 
 	Title   : get_chat_box_link
 					      
     Function: this will return you the link of you chat box
 
 
-  get_badge
+ get_badge
 
 	Title   : get_badge
 					      
