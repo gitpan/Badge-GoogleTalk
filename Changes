@@ -4,3 +4,5 @@ Revision history for Badge-GoogleTalk
        Initial release.
 0.0.2  Wed Apr  15 18:00:00 2009
 	Optimizations and added new function to check badge style
+0.0.3  Thu Mar  17 12:00:00 2010
+	Improved all failed test

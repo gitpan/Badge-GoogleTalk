@@ -1,0 +1,26 @@
+--- #YAML:1.0
+name:               Badge-GoogleTalk
+version:            v0.3
+abstract:           To get your status message/online status/chat link from google talk badge for website live chat.
+author:
+    - Rakesh Kumar Shardiwal <rakesh.shardiwal@gmail.com>
+license:            unknown
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
+requires:
+    HTTP::Request:   5.818
+    LWP::UserAgent:  5.823
+    Test::More:      0
+    version:         0
+    WWW::Mechanize:  0
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.56
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4

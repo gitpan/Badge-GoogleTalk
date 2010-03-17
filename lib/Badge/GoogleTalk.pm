@@ -4,10 +4,13 @@ use warnings;
 use strict;
 
 use version;
-my $VERSION = qv('0.0.2');
+our $VERSION = qv('0.3');
 
 use WWW::Mechanize;
 
+=head2
+New
+=cut
 sub new
 {
 	my($class,%args) = @_;
@@ -25,6 +28,9 @@ sub new
 	return $self;
 }
 
+=head2
+private method to get content
+=cut
 sub _get_contents
 {
 	my $self = shift;
@@ -46,6 +52,11 @@ sub _get_contents
 	return $page_contents;
 }
 
+=head2
+	Title   : is_online			      
+	Function: this will return your online status
+	return : 1 if online, 0 if offline
+=cut
 sub is_online{
 	my $self = shift;
 	my $content = $self->get_status();
@@ -56,6 +67,11 @@ sub is_online{
 	return 1;
 }
 
+=head2
+	Title   : get_status
+	Function: this will return your status message
+	return : 1 if away
+=cut
 sub get_status {
 	my $self = shift;
 	my $contents = $self->_get_contents();
@@ -65,6 +81,10 @@ sub get_status {
 	return $1;
 }
 
+=head2
+	Title   : get_chat_box_link
+	Function: this will return you the link of you chat box
+=cut
 sub get_chat_box_link{
 	my $self = shift;
 	my $url = $self->{'talk_url'} ;
@@ -72,6 +92,11 @@ sub get_chat_box_link{
 	return $url;
 }
 
+=head2
+	Title   : is_away
+	Function: this will return your away status
+	return : 1 if away
+=cut
 sub is_away{
 	my $self = shift;
 	my $content = $self->get_status();
@@ -82,6 +107,10 @@ sub is_away{
 	return 0;
 }
 
+=head2
+	Title   : get_badge
+	Function: this will return you the badge iframe to use for your website
+=cut
 sub get_badge{
 	my $self 	= shift;
 	my $badge 	= '<iframe src="http://www.google.com/talk/service/badge/Show?tk='.
@@ -90,11 +119,19 @@ sub get_badge{
 	return $badge;
 }
 
+=head2
+	Title   : is_classic_style
+	Function: this will return your badge style
+	return : 1 if Classic badge or one/two line style, 0 if Hyperlink and status icon style
+=cut
 sub is_classic_style {
 	my $self	= shift;
 	return $self->{'is_badge_html'};
 }
 
+=head2
+private method to warn user
+=cut
 sub _warn_user {
     my($type,$msg) = @_;
     print "[ $type ] $msg \n";
@@ -111,7 +148,7 @@ Badge::GoogleTalk - To get your status message/online status/chat link from goog
 
 =head1 VERSION
 
-version 0.0.1
+version 0.3
 
 
 =head1 SYNOPSIS
@@ -159,52 +196,6 @@ version 0.0.1
 	chat box link and return that information to our perl application to keep up the live chat.
 
 =head1 METHODS
-
-=head2 is_online
-
-	Title   : is_online
-					      
-    Function: this will return your online status
-	
-	return : 1 if online, 0 if offline
-
-=head2 is_away
-
-	Title   : is_away
-					      
-    Function: this will return your away status
-	
-	return : 1 if away
-
-=head2 get_status
-
-	Title   : get_status
-					      
-    Function: this will return your status message
-	
-	return : 1 if away
-
-=head2 is_classic_style
-
-	Title   : is_classic_style
-					      
-    Function: this will return your badge style
-	
-	return : 1 if Classic badge or one/two line style, 0 if Hyperlink and status icon style
-
-=head2 get_chat_box_link
-
-	Title   : get_chat_box_link
-					      
-    Function: this will return you the link of you chat box
-
-
-=head2 get_badge
-
-	Title   : get_badge
-					      
-    Function: this will return you the badge iframe to use for your website
-
 
 =head1 DIAGNOSTICS
 
