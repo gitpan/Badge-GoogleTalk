@@ -11,9 +11,7 @@ WriteMakefile(
     PREREQ_PM => {
         'Test::More' 	=> 0,
         'version'    	=> 0,
-		'WWW::Mechanize'=> 0,
-		'HTTP::Request'	=> 5.818,
-		'LWP::UserAgent'=> 5.823,
+	'WWW::Mechanize'=> 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Badge-GoogleTalk-*' },

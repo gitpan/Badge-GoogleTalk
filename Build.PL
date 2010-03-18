@@ -10,6 +10,7 @@ my $builder = Module::Build->new(
     requires => {
         'Test::More' => 0,
         'version'    => 0,
+	'WWW::Mechanize' => 0
     },
     add_to_cleanup      => [ 'Badge-GoogleTalk-*' ],
 );

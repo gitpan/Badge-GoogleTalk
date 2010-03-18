@@ -4,12 +4,77 @@ use warnings;
 use strict;
 
 use version;
-our $VERSION = qv('0.3');
+our $VERSION = qv('0.4');
 
 use WWW::Mechanize;
 
+=head1 NAME
+
+Badge::GoogleTalk - To get your status message/online status/chat link from google talk badge for website live chat.
+
+=head1 VERSION
+
+version 0.3
+
+
+=head1 SYNOPSIS
+
+    use Badge::GoogleTalk;
+	my $my_object = Badge::GoogleTalk->new(
+			key => "your identification key",
+	);
+
+	# Get Your Badge's online status
+	my $online_status = $my_object->is_online();
+	my $ol_status = $online_status == 0 ? "Offline" : "Online";
+	
+	# Get Your Badge's status message	
+	my $status = $my_object->get_status();
+
+	# Check Your Badge's away status
+	my $away_status = $my_object->is_away();
+	my $aw_status = $away_status == 1 ? "Away" : "Online";
+	
+	# Check Your Badge's Style
+	my $style = $my_object->is_classic_style();
+	my $style_status = $style == 1 ? "Classic badge or one/two line style" : "Hyperlink and status icon style";
+	
+	# Your Badge's in HTML format
+	my $badge = $my_object->get_badge();
+
+	# Your chat link for your website
+	my $chat_link = $my_object->get_chat_box_link();
+
+	To create a simple Badge::GoogleTalk you must pass the key;
+	key is your identification from the google authentication.
+	
+	To create your chatback badge, visit http://www.google.com/talk/service/badge/New.
+	If you're using a Google Apps account,
+	you can create a chatback badge by visiting http://www.google.com/talk/service/a/DOMAIN/badge/New where DOMAIN is the name of your domain.
+ 
+	Use the alphanumeric account hash to pass as key in constructor
+  
+=head1 DESCRIPTION
+
+	A simple perl module for retrieving a user's Google Talk status
+	Google does provide a badge, to post your status/images/links to your
+	website to start a chat. Using this code, we can extract the status messages, online status,
+	chat box link and return that information to our perl application to keep up the live chat.
+
+=head1 METHODS
+
+=head1 DIAGNOSTICS
+
+	This module depends on the output from a hosted web page by Google. If Google
+	decides at any time to change this output, the module will likely fail.
+	Please e-mail me if this is the case, so we can get it working again.
+
+=over
+
+=back
+
+
 =head2
-New
 =cut
 sub new
 {
@@ -29,7 +94,6 @@ sub new
 }
 
 =head2
-private method to get content
 =cut
 sub _get_contents
 {
@@ -130,7 +194,6 @@ sub is_classic_style {
 }
 
 =head2
-private method to warn user
 =cut
 sub _warn_user {
     my($type,$msg) = @_;
@@ -141,72 +204,6 @@ sub _warn_user {
 
 1; # Magic true value required at end of module
 __END__
-
-=head1 NAME
-
-Badge::GoogleTalk - To get your status message/online status/chat link from google talk badge for website live chat.
-
-=head1 VERSION
-
-version 0.3
-
-
-=head1 SYNOPSIS
-
-    use Badge::GoogleTalk;
-	my $my_object = Badge::GoogleTalk->new(
-			key => "your identification key",
-	);
-
-	# Get Your Badge's online status
-	my $online_status = $my_object->is_online();
-	my $ol_status = $online_status == 0 ? "Offline" : "Online";
-	
-	# Get Your Badge's status message	
-	my $status = $my_object->get_status();
-
-	# Check Your Badge's away status
-	my $away_status = $my_object->is_away();
-	my $aw_status = $away_status == 1 ? "Away" : "Online";
-	
-	# Check Your Badge's Style
-	my $style = $my_object->is_classic_style();
-	my $style_status = $style == 1 ? "Classic badge or one/two line style" : "Hyperlink and status icon style";
-	
-	# Your Badge's in HTML format
-	my $badge = $my_object->get_badge();
-
-	# Your chat link for your website
-	my $chat_link = $my_object->get_chat_box_link();
-
-	To create a simple Badge::GoogleTalk you must pass the key;
-	key is your identification from the google authentication.
-	
-	To create your chatback badge, visit http://www.google.com/talk/service/badge/New.
-	If you're using a Google Apps account,
-	you can create a chatback badge by visiting http://www.google.com/talk/service/a/DOMAIN/badge/New where DOMAIN is the name of your domain.
- 
-	Use the alphanumeric account hash to pass as key in constructor
-  
-=head1 DESCRIPTION
-
-	A simple perl module for retrieving a user's Google Talk status
-	Google does provide a badge, to post your status/images/links to your
-	website to start a chat. Using this code, we can extract the status messages, online status,
-	chat box link and return that information to our perl application to keep up the live chat.
-
-=head1 METHODS
-
-=head1 DIAGNOSTICS
-
-	This module depends on the output from a hosted web page by Google. If Google
-	decides at any time to change this output, the module will likely fail.
-	Please e-mail me if this is the case, so we can get it working again.
-
-=over
-
-=back
-
 
 =head1 CONFIGURATION AND ENVIRONMENT
   
